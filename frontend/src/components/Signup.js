@@ -56,7 +56,7 @@ function Signup() {
     // validate form
     if (validateForm()) {
       try {
-        // API call to signup
+        // call API endpoint for signup
         const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.SIGNUP}`, {
           username,
           email,

@@ -49,16 +49,18 @@ function Login() {
     // validate form
     if (validateForm()) {
       try {
-        // API call to login
+        // call the API endpoint to login
         const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.LOGIN}`, {
           email,
           password
         });
         
-        // If login successful, create a token and store it
+        // if the login is successful
         if (response.data.message === 'Login successful.') {
-          // Generate a simple token (since API doesn't return one)
+          // generate auth token
           const token = 'auth-token-' + Date.now();
+          
+          // store token in local storage
           localStorage.setItem('token', token);
           
           // Navigate to employees page after login

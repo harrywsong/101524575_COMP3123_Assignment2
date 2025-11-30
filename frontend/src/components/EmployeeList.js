@@ -5,7 +5,6 @@ import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -25,14 +24,10 @@ function EmployeeList() {
         const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.EMPLOYEES}`);
         // set employees state
         setEmployees(response.data);
-        // set loading to false
-        setLoading(false);
         // if there is an error
       } catch (error) {
         // set error state
         setError('Failed to load employees');
-        // set loading to false
-        setLoading(false);
       }
     };
 
@@ -47,10 +42,18 @@ function EmployeeList() {
     navigate('/login');
   };
 
-  // if loading is true return loading message
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleDelete = async (employeeId) => {
+    if (window.confirm('Are you sure you want to delete this employee?')) {
+      try {
+        await axios.delete(`${API_BASE_URL}${API_ENDPOINTS.EMPLOYEES}?eid=${employeeId}`);
+        // Refresh the employee list
+        const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.EMPLOYEES}`);
+        setEmployees(response.data);
+      } catch (error) {
+        alert('Failed to delete employee');
+      }
+    }
+  };
 
   // if error is true return error message
   if (error) {
@@ -86,14 +89,15 @@ function EmployeeList() {
               <td>{employee.department}</td>
               <td>{employee.salary}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+                <button onClick={() => navigate(`/employees/view/${employee.employee_id}`)}>View</button>
+                <button onClick={() => navigate(`/employees/edit/${employee.employee_id}`)}>Edit</button>
+                <button onClick={() => handleDelete(employee.employee_id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button>Add New Employee</button>
+      <button onClick={() => navigate('/employees/add')}>Add New Employee</button>
     </div>
   );
 }
