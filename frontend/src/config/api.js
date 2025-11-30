@@ -9,5 +9,6 @@ export const API_ENDPOINTS = {
   LOGIN: '/api/v1/user/login',
   EMPLOYEES: '/api/v1/emp/employees',
   EMPLOYEE_BY_ID: (id) => `/api/v1/emp/employees/${id}`,
+  EMPLOYEES_SEARCH: '/api/v1/emp/employees/search',
 };
 
