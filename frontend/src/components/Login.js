@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -40,15 +42,36 @@ function Login() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // prevent default form submit
     e.preventDefault();
     
     // validate form
     if (validateForm()) {
-      // TODO: Add login API call here
-      // Navigate to employees page after login
-      navigate('/employees');
+      try {
+        // API call to login
+        const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.LOGIN}`, {
+          email,
+          password
+        });
+        
+        // If login successful, create a token and store it
+        if (response.data.message === 'Login successful.') {
+          // Generate a simple token (since API doesn't return one)
+          const token = 'auth-token-' + Date.now();
+          localStorage.setItem('token', token);
+          
+          // Navigate to employees page after login
+          navigate('/employees');
+        }
+      } catch (error) {
+        // Handle error response
+        if (error.response && error.response.data && error.response.data.message) {
+          setErrors({ submit: error.response.data.message });
+        } else {
+          setErrors({ submit: 'Login failed. Please try again.' });
+        }
+      }
     }
   };
 
@@ -77,6 +100,7 @@ function Login() {
           />
           {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
         </div>
+        {errors.submit && <div style={{ color: 'red' }}>{errors.submit}</div>}
         <button type="submit">Login</button>
       </form>
       <p>

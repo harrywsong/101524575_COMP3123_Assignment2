@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 function Signup() {
   const [email, setEmail] = useState('');
@@ -35,9 +37,9 @@ function Signup() {
     // if password is empty return error
     if (!password) {
       newErrors.password = 'Password is required';
-      // if password is less than 6 characters return error
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      // if password is less than 7 characters return error (matches backend requirement)
+    } else if (password.length < 7) {
+      newErrors.password = 'Password must be at least 7 characters';
     }
 
     // set errors
@@ -47,15 +49,32 @@ function Signup() {
   };
 
   // handle form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // prevent default form submit
     e.preventDefault();
     
     // validate form
     if (validateForm()) {
-      // TODO: Add signup API call here
-      // Navigate to login page after signup
-      navigate('/login');
+      try {
+        // API call to signup
+        const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.SIGNUP}`, {
+          username,
+          email,
+          password
+        });
+        
+        // If signup successful, navigate to login page
+        if (response.data.message === 'User created successfully.') {
+          navigate('/login');
+        }
+      } catch (error) {
+        // Handle error response
+        if (error.response && error.response.data && error.response.data.message) {
+          setErrors({ submit: error.response.data.message });
+        } else {
+          setErrors({ submit: 'Signup failed. Please try again.' });
+        }
+      }
     }
   };
 
@@ -94,6 +113,7 @@ function Signup() {
           />
           {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
         </div>
+        {errors.submit && <div style={{ color: 'red' }}>{errors.submit}</div>}
         <button type="submit">Sign Up</button>
       </form>
       <p>
