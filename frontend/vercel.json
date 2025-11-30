@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://101524575-comp-3123-assignment1.vercel.app/api/:path*"
+      }
+    ]
+  }

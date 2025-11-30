@@ -1,7 +1,5 @@
-// base URL for API access (empty string uses proxy in development)
-export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://101524575-comp-3123-assignment1.vercel.app'
-  : '';
+// base URL for API access (empty string uses same domain)
+export const API_BASE_URL = '';
 
 // specific API endpoints
 export const API_ENDPOINTS = {
@@ -11,4 +9,3 @@ export const API_ENDPOINTS = {
   EMPLOYEE_BY_ID: (id) => `/api/v1/emp/employees/${id}`,
   EMPLOYEES_SEARCH: '/api/v1/emp/employees/search',
 };
-
