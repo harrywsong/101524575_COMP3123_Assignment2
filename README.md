@@ -9,17 +9,17 @@ It connects to a backend API that was developed in Assignment 1 and is deployed 
 
 ## Prerequisites
 
-Before running this project locally, make sure you have the following installed:
+Before running this project, make sure the following are installed:
 
-- **Node.js** (version 14 or higher)
-- **npm** (comes with Node.js) or **yarn**
+- **Node.js**
+- **npm** 
 
 ## Local Setup Instructions
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/harrywsong/101524575_COMP3123_Assignment2.git
 cd 101524575_comp3123_assignment2_reactjs
 ```
 
@@ -49,7 +49,7 @@ The frontend connects to a backend API that is already deployed on Vercel:
 - **Production Backend URL**: `https://101524575-comp-3123-assignment1.vercel.app`
 - **Backend Repository**: [https://github.com/harrywsong/101524575_COMP3123_Assignment1](https://github.com/harrywsong/101524575_COMP3123_Assignment1)
 
-In development mode, the app uses a proxy configured in `package.json` to connect to the backend API. No additional backend setup is required for local development.
+In development mode, the app uses a proxy configured in `package.json` to connect to the backend API.
 
 
 ## Technologies Used
