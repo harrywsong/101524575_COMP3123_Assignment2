@@ -34,7 +34,7 @@ function EmployeeDetails() {
     // return error message and back button
     return (
       <div>
-        <div>{error || 'Employee not found'}</div>
+        <div className="error">{error || 'Employee not found'}</div>
         <button onClick={() => navigate('/employees')}>Back to List</button>
       </div>
     );
@@ -45,7 +45,7 @@ function EmployeeDetails() {
     <div>
       <h1>Employee Details</h1>
       <button onClick={() => navigate('/employees')}>Back to List</button>
-      <div>
+      <div class = "employee-details">
         {employee.profile_picture && (
           <div style={{ marginBottom: '20px' }}>
             <img 
