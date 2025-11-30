@@ -14,7 +14,8 @@ function EditEmployee() {
     position: '',
     salary: '',
     date_of_joining: '',
-    department: ''
+    department: '',
+    profile_picture: ''
   });
   // error state
   const [error, setError] = useState('');
@@ -36,7 +37,8 @@ function EditEmployee() {
           position: emp.position,
           salary: emp.salary.toString(),
           date_of_joining: new Date(emp.date_of_joining).toISOString().split('T')[0],
-          department: emp.department
+          department: emp.department,
+          profile_picture: emp.profile_picture || ''
         });
         // if there is an error
       } catch (error) {
@@ -56,6 +58,33 @@ function EditEmployee() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  // handle file upload and convert to base64
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (limit to 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setError('File size must be less than 2MB');
+        return;
+      }
+      
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please upload an image file');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          profile_picture: reader.result
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // handle form submit
@@ -149,7 +178,7 @@ function EditEmployee() {
             required
           />
         </div>
-        <div>
+<div>
           <label>Department:</label>
           <input
             type="text"
@@ -158,6 +187,23 @@ function EditEmployee() {
             onChange={handleChange}
             required
           />
+        </div>
+        <div>
+          <label>Profile Picture:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          {formData.profile_picture && (
+            <div>
+              <img 
+                src={formData.profile_picture} 
+                alt="Preview" 
+                style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '10px' }}
+              />
+            </div>
+          )}
         </div>
         <button type="submit">Update Employee</button>
       </form>

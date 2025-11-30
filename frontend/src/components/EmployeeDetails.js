@@ -46,6 +46,15 @@ function EmployeeDetails() {
       <h1>Employee Details</h1>
       <button onClick={() => navigate('/employees')}>Back to List</button>
       <div>
+        {employee.profile_picture && (
+          <div style={{ marginBottom: '20px' }}>
+            <img 
+              src={employee.profile_picture} 
+              alt={`${employee.first_name} ${employee.last_name}`}
+              style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
+            />
+          </div>
+        )}
         <p><strong>ID:</strong> {employee.employee_id}</p>
         <p><strong>First Name:</strong> {employee.first_name}</p>
         <p><strong>Last Name:</strong> {employee.last_name}</p>

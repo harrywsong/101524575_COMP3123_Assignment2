@@ -178,8 +178,9 @@ function EmployeeList() {
       {error && <div>{error}</div>}
 
       <table>
-        <thead>
+      <thead>
           <tr>
+            <th>Picture</th>
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
@@ -193,11 +194,22 @@ function EmployeeList() {
         <tbody>
           {employees.length === 0 ? (
             <tr>
-              <td colSpan="8">No employees found</td>
+              <td colSpan="9">No employees found</td>
             </tr>
           ) : (
             employees.map((employee) => (
               <tr key={employee.employee_id}>
+                <td>
+                  {employee.profile_picture ? (
+                    <img 
+                      src={employee.profile_picture} 
+                      alt={employee.first_name}
+                      style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }}
+                    />
+                  ) : (
+                    <div style={{ width: '40px', height: '40px', backgroundColor: '#ddd', borderRadius: '50%' }}></div>
+                  )}
+                </td>
                 <td>{employee.employee_id}</td>
                 <td>{employee.first_name}</td>
                 <td>{employee.last_name}</td>
