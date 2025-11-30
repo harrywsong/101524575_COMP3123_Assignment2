@@ -90,7 +90,7 @@ function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
+          {errors.email && <div className="error">{errors.email}</div>}
         </div>
         <div>
           <label htmlFor="password">Password:</label>
@@ -100,9 +100,9 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
+          {errors.password && <div className="error">{errors.password}</div>}
         </div>
-        {errors.submit && <div style={{ color: 'red' }}>{errors.submit}</div>}
+        {errors.submit && <div className="error">{errors.submit}</div>}
         <button type="submit">Login</button>
       </form>
       <p>
