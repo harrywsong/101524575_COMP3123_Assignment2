@@ -104,9 +104,17 @@ function EmployeeList() {
       const url = `${API_BASE_URL}${API_ENDPOINTS.EMPLOYEES_SEARCH}?${params.toString()}`;
       console.log('Search URL:', url);
       const response = await axios.get(url);
-      setEmployees(response.data);
+      console.log('Search response:', response.data);
       
-      if (response.data.length === 0) {
+      // Format the response to ensure employee_id exists (in case search returns different structure)
+      const formattedEmployees = response.data.map(emp => ({
+        ...emp,
+        employee_id: emp.employee_id || (emp._id ? emp._id.toString() : null) || emp.id || null
+      }));
+      
+      setEmployees(formattedEmployees);
+      
+      if (formattedEmployees.length === 0) {
         setError('No employees found matching the search criteria');
       }
     } catch (error) {
@@ -144,11 +152,14 @@ function EmployeeList() {
   // rendered form
   return (
     <div>
-      <h1>Employee List</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <div className="page-header">
+        <h1>Employee List</h1>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       
-      <h2>Search Employees</h2>
-      <form onSubmit={handleSearch}>
+      <div className="search-form">
+        <h2>Search Employees</h2>
+        <form onSubmit={handleSearch}>
         <div>
           <label htmlFor="department">Department:</label>
           <input
@@ -171,11 +182,12 @@ function EmployeeList() {
         </div>
         <button type="submit">Search</button>
         {isSearching && (
-          <button type="button" onClick={handleClearSearch}>Clear Search</button>
+          <button type="button" className="btn-secondary" onClick={handleClearSearch}>Clear Search</button>
         )}
-      </form>
+        </form>
+      </div>
 
-      {error && <div>{error}</div>}
+      {error && <div className="error">{error}</div>}
 
       <table>
       <thead>
@@ -218,9 +230,11 @@ function EmployeeList() {
                 <td>{employee.department}</td>
                 <td>{employee.salary}</td>
                 <td>
-                  <button onClick={() => navigate(`/employees/view/${employee.employee_id}`)}>View</button>
-                  <button onClick={() => navigate(`/employees/edit/${employee.employee_id}`)}>Edit</button>
-                  <button onClick={() => handleDelete(employee.employee_id)}>Delete</button>
+                  <div className="employee-actions">
+                    <button onClick={() => navigate(`/employees/view/${employee.employee_id}`)}>View</button>
+                    <button onClick={() => navigate(`/employees/edit/${employee.employee_id}`)}>Edit</button>
+                    <button className="btn-danger" onClick={() => handleDelete(employee.employee_id)}>Delete</button>
+                  </div>
                 </td>
               </tr>
             ))
