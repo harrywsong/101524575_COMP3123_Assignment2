@@ -45,6 +45,7 @@ function AddEmployee() {
         return;
       }
 
+      setError('');
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData({
@@ -75,7 +76,7 @@ function AddEmployee() {
         setError(error.response.data.message);
         // if there is no error then set error state as failed to add employee
       } else {
-        setError('Failed to add employee');
+        setError('Failed to add employee. Make sure the image is less than 2MB and is an image file.');
       }
     }
   };
@@ -85,7 +86,7 @@ function AddEmployee() {
     <div>
       <h1>Add New Employee</h1>
       <button onClick={() => navigate('/employees')}>Back to List</button>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name:</label>

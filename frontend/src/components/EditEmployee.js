@@ -116,7 +116,7 @@ function EditEmployee() {
     <div>
       <h1>Edit Employee</h1>
       <button onClick={() => navigate('/employees')}>Back to List</button>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name:</label>
